@@ -1,0 +1,33 @@
+node_modules/
+dist/
+dist-ssr/
+*.local
+.env
+.env.*
+!.env.example
+
+# Ignore everything in c:\development except project files
+business project/
+center/
+clothing project/
+favicon.io/
+Git-demo/
+Javascript/
+portfolio/
+shoes ws/
+video/
+web/
+xyz/
+bg-book.webp
+BIEKChallan8004000208025803.pdf
+book1.jpeg
+book2.jpeg
+challan.png.jpeg
+home.html
+img.png
+login page.html
+marksheet.png.jpeg
+qubic_style_landing_page.html
+SAMPLE 1.mp4
+SMIT-id card.pdf
+Task Management App.html

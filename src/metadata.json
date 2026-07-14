@@ -1,0 +1,6 @@
+{
+  "name": "IceDelights Website Clone",
+  "description": "A high-fidelity responsive clone of the IceDelights Ice Cream Parlor landing page, featuring classic favorites, promotions, a custom shop/cart experience, elegant animations, and a rich product gallery.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
