@@ -18,7 +18,7 @@ export default function AboutPage() {
       <div className="bg-gradient-to-br from-pink-50 via-purple-50 to-white py-16 px-4 sm:px-6 lg:px-8 text-center">
         <div className="max-w-3xl mx-auto">
           <h1 style={{ fontFamily: "'Berkshire Swash', serif", fontSize: 'clamp(28px,4vw,48px)', color: '#0f0200', fontWeight: 400 }}>
-            About <em style={{ color: '#f83d8e', fontStyle: 'normal' }}>Taste Out</em>
+            About <em style={{ color: '#e53e3e', fontStyle: 'normal' }}>Taste Out</em>
           </h1>
           <p className="mt-4 text-gray-500 text-sm sm:text-base leading-relaxed max-w-xl mx-auto">
             Karachi's favourite destination for handcrafted ice creams, Belgian waffles, and delightful frozen treats.
@@ -66,7 +66,7 @@ export default function AboutPage() {
       <section className="py-14 bg-gray-50">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 style={{ fontFamily: "'Berkshire Swash', serif", fontSize: 'clamp(22px,3vw,34px)', color: '#0f0200', fontWeight: 400, marginBottom: '40px' }}>
-            What Makes Us <em style={{ color: '#f83d8e', fontStyle: 'normal' }}>Different</em>
+            What Makes Us <em style={{ color: '#e53e3e', fontStyle: 'normal' }}>Different</em>
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             {values.map((v, i) => (

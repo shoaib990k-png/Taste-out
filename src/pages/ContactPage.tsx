@@ -35,7 +35,7 @@ export default function ContactPage() {
       {/* Header */}
       <div className="bg-white border-b border-gray-100 py-10 px-4 sm:px-6 lg:px-8 text-center">
         <h1 style={{ fontFamily: "'Berkshire Swash', serif", fontSize: 'clamp(26px,4vw,44px)', color: '#0f0200', fontWeight: 400 }}>
-          Contact <em style={{ color: '#f83d8e', fontStyle: 'normal' }}>Us</em>
+          Contact <em style={{ color: '#e53e3e', fontStyle: 'normal' }}>Us</em>
         </h1>
         <p className="text-gray-500 text-sm mt-2">We'd love to hear from you — reach out anytime!</p>
       </div>

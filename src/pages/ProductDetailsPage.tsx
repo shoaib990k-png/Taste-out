@@ -79,7 +79,7 @@ export default function ProductDetailsPage() {
             </Link>
 
             <div>
-              <span className="text-xs font-semibold text-[#f83d8e] bg-pink-50 px-2.5 py-1 rounded-full">
+              <span className="text-xs font-semibold text-[#e53e3e] bg-pink-50 px-2.5 py-1 rounded-full">
                 {product.category}
               </span>
               <h1 style={{ fontFamily: "'Berkshire Swash', serif", fontSize: 'clamp(24px,3.5vw,38px)', color: '#0f0200', fontWeight: 400, marginTop: '10px', lineHeight: 1.2 }}>
@@ -98,7 +98,7 @@ export default function ProductDetailsPage() {
             </div>
 
             {/* Price */}
-            <div className="text-3xl font-bold text-[#f83d8e]">
+            <div className="text-3xl font-bold text-[#e53e3e]">
               ${product.price.toFixed(2)}
               <span className="text-sm text-gray-400 font-normal ml-2">per serving</span>
             </div>
@@ -127,7 +127,7 @@ export default function ProductDetailsPage() {
                 </button>
               </div>
               <span className="text-sm font-bold text-gray-500">
-                = <span className="text-[#f83d8e]">${(product.price * quantity).toFixed(2)}</span>
+                = <span className="text-[#e53e3e]">${(product.price * quantity).toFixed(2)}</span>
               </span>
             </div>
 
@@ -166,7 +166,7 @@ export default function ProductDetailsPage() {
                   </div>
                   <div className="p-2.5">
                     <p className="text-xs font-bold text-gray-800 line-clamp-2 group-hover:text-[#e53e3e] transition-colors">{p.name}</p>
-                    <p className="text-sm font-bold text-[#f83d8e] mt-1">${p.price.toFixed(2)}</p>
+                    <p className="text-sm font-bold text-[#e53e3e] mt-1">${p.price.toFixed(2)}</p>
                   </div>
                 </Link>
               ))}

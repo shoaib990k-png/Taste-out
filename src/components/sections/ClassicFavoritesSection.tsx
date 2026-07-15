@@ -141,7 +141,7 @@ export default function ClassicFavoritesSection({
               lineHeight: 1.2,
             }}
           >
-            Our <em style={{ color: '#f83d8e', fontStyle: 'normal' }}>Classic</em> Favorites
+            Our <em style={{ color: '#e53e3e', fontStyle: 'normal' }}>Classic</em> Favorites
           </h2>
           <p
             style={{
@@ -328,7 +328,7 @@ export default function ClassicFavoritesSection({
                       fontFamily: "'Archivo', sans-serif",
                       fontSize: '15px',
                       fontWeight: 700,
-                      color: '#f83d8e',
+                      color: '#e53e3e',
                     }}
                   >
                     ${product.price.toFixed(2)}

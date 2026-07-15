@@ -47,7 +47,7 @@ export default function MenuPage() {
       <div className="bg-white border-b border-gray-100 py-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <h1 style={{ fontFamily: "'Berkshire Swash', serif", fontSize: 'clamp(28px,4vw,44px)', color: '#0f0200', fontWeight: 400, margin: '0 0 6px' }}>
-            Our <em style={{ color: '#f83d8e', fontStyle: 'normal' }}>Menu</em>
+            Our <em style={{ color: '#e53e3e', fontStyle: 'normal' }}>Menu</em>
           </h1>
           <p className="text-gray-500 text-sm">Handcrafted with quality ingredients. Pick your favourite.</p>
         </div>
@@ -147,7 +147,7 @@ export default function MenuPage() {
                   <p className="text-[10px] text-gray-400 uppercase tracking-wide mb-1">{product.category}</p>
                   <p className="text-xs text-gray-500 line-clamp-2 flex-1">{product.description}</p>
                   <div className="flex items-center justify-between mt-3 pt-2 border-t border-gray-50">
-                    <span className="text-base font-bold text-[#f83d8e]">${product.price.toFixed(2)}</span>
+                    <span className="text-base font-bold text-[#e53e3e]">${product.price.toFixed(2)}</span>
                     <div className="flex items-center gap-1.5">
                       <Link
                         to={`/products/${slugify(product.name)}`}

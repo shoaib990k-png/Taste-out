@@ -29,7 +29,7 @@ export default function CategoriesSection({ onSelectCategory }: CategoriesSectio
           }}
         >
           Explore Our{' '}
-          <em style={{ color: '#f83d8e', fontStyle: 'normal' }}>Categories</em>
+          <em style={{ color: '#e53e3e', fontStyle: 'normal' }}>Categories</em>
         </h2>
         <p
           style={{

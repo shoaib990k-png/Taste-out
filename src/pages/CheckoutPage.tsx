@@ -99,7 +99,7 @@ export default function CheckoutPage() {
             <ArrowLeft size={14} /> Back to Cart
           </Link>
           <h1 style={{ fontFamily: "'Berkshire Swash', serif", fontSize: 'clamp(24px,3.5vw,38px)', color: '#0f0200', fontWeight: 400 }}>
-            Place Your <em style={{ color: '#f83d8e', fontStyle: 'normal' }}>Order</em>
+            Place Your <em style={{ color: '#e53e3e', fontStyle: 'normal' }}>Order</em>
           </h1>
         </div>
       </div>
@@ -215,7 +215,7 @@ export default function CheckoutPage() {
                 <div className="flex justify-between"><span>Tax</span><span>${tax.toFixed(2)}</span></div>
                 <div className="flex justify-between"><span>Delivery</span><span>{deliveryFee === 0 ? 'Free' : `$${deliveryFee.toFixed(2)}`}</span></div>
                 <div className="flex justify-between font-bold text-gray-800 text-sm pt-1 border-t border-gray-100">
-                  <span>Total</span><span className="text-[#f83d8e]">${total.toFixed(2)}</span>
+                  <span>Total</span><span className="text-[#e53e3e]">${total.toFixed(2)}</span>
                 </div>
               </div>
             </div>

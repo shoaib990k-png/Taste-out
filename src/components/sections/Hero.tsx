@@ -48,9 +48,9 @@ export default function Hero({ onCtaClick, onViewMenuClick }: HeroProps) {
 
             {/* H1 */}
             <h1 className="hero-h1">
-              Classic <span style={{ color: '#f83d8e' }}>Ice</span>
+              Classic <span style={{ color: '#e53e3e' }}>Ice</span>
               <br />
-              <span style={{ color: '#f83d8e' }}>Cream</span> Parlor
+              <span style={{ color: '#e53e3e' }}>Cream</span> Parlor
             </h1>
 
             {/* Description */}

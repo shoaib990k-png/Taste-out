@@ -33,7 +33,7 @@ export default function CartPage() {
       <div className="bg-white border-b border-gray-100 py-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-5xl mx-auto">
           <h1 style={{ fontFamily: "'Berkshire Swash', serif", fontSize: 'clamp(24px,3.5vw,38px)', color: '#0f0200', fontWeight: 400 }}>
-            Your <em style={{ color: '#f83d8e', fontStyle: 'normal' }}>Cart</em>
+            Your <em style={{ color: '#e53e3e', fontStyle: 'normal' }}>Cart</em>
           </h1>
           <p className="text-sm text-gray-400 mt-1">{cart.length} {cart.length === 1 ? 'item' : 'items'}</p>
         </div>
@@ -60,7 +60,7 @@ export default function CartPage() {
                     {product.name}
                   </Link>
                   <p className="text-xs text-gray-400 mt-0.5">{product.category}</p>
-                  <p className="text-sm font-bold text-[#f83d8e] mt-1">${(product.price * quantity).toFixed(2)}</p>
+                  <p className="text-sm font-bold text-[#e53e3e] mt-1">${(product.price * quantity).toFixed(2)}</p>
                 </div>
                 <div className="flex flex-col items-end gap-2 shrink-0">
                   <button onClick={() => handleRemove(product.id, product.name)} className="text-gray-300 hover:text-red-500 transition-colors" aria-label="Remove item">
@@ -96,7 +96,7 @@ export default function CartPage() {
                 <span>{deliveryFee === 0 ? <span className="text-green-600 font-semibold">Free</span> : `$${deliveryFee.toFixed(2)}`}</span>
               </div>
               <div className="border-t border-gray-100 pt-2 flex justify-between font-bold text-gray-800 text-base">
-                <span>Total</span><span className="text-[#f83d8e]">${total.toFixed(2)}</span>
+                <span>Total</span><span className="text-[#e53e3e]">${total.toFixed(2)}</span>
               </div>
             </div>
             {deliveryFee > 0 && (

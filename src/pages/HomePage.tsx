@@ -1,9 +1,10 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Hero from '../components/sections/Hero';
 import CategoriesSection from '../components/sections/CategoriesSection';
 import PromoBanner from '../components/sections/PromoBanner';
 import Testimonials from '../components/sections/Testimonials';
+import MenuPopup from '../components/menu/MenuPopup';
 import { useCart } from '../context/CartContext';
 import { useToast } from '../context/ToastContext';
 import { products, blogPosts } from '../data';
@@ -15,6 +16,7 @@ export default function HomePage() {
   const navigate = useNavigate();
   const { addToCart } = useCart();
   const { showToast } = useToast();
+  const [menuPopupOpen, setMenuPopupOpen] = useState(false);
 
   useEffect(() => {
     document.title = 'Taste Out — Classic Ice Cream & Waffles in Karachi';
@@ -33,7 +35,13 @@ export default function HomePage() {
       <Hero
         homeVariant={1}
         onCtaClick={() => navigate('/menu')}
-        onViewMenuClick={() => navigate('/menu')}
+        onViewMenuClick={() => setMenuPopupOpen(true)}
+      />
+
+      {/* Menu Image Popup */}
+      <MenuPopup
+        isOpen={menuPopupOpen}
+        onClose={() => setMenuPopupOpen(false)}
       />
 
       {/* Categories */}
@@ -47,7 +55,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-10">
             <h2 style={{ fontFamily: "'Berkshire Swash', serif", fontSize: 'clamp(24px,3.5vw,40px)', fontWeight: 400, color: '#0f0200', margin: '0 0 8px' }}>
-              Our <em style={{ color: '#f83d8e', fontStyle: 'normal' }}>Best Sellers</em>
+              Our <em style={{ color: '#e53e3e', fontStyle: 'normal' }}>Best Sellers</em>
             </h2>
             <p className="text-gray-500 text-sm">These treats sell out fast — don't miss out!</p>
           </div>
@@ -80,7 +88,7 @@ export default function HomePage() {
                   </div>
                   <p className="text-[11px] text-gray-400 uppercase tracking-wide">{product.category}</p>
                   <div className="flex items-center justify-between mt-auto pt-2">
-                    <span className="text-base font-bold text-[#f83d8e]">${product.price.toFixed(2)}</span>
+                    <span className="text-base font-bold text-[#e53e3e]">${product.price.toFixed(2)}</span>
                     <button
                       onClick={() => handleAddToCart(product)}
                       className="w-8 h-8 rounded-full flex items-center justify-center text-white shrink-0 hover:opacity-90 active:scale-90 transition-all"
@@ -117,7 +125,7 @@ export default function HomePage() {
       <section className="py-14 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center space-y-4">
           <h2 style={{ fontFamily: "'Berkshire Swash', serif", fontSize: 'clamp(22px,3vw,36px)', fontWeight: 400, color: '#0f0200' }}>
-            Made Fresh, Served with <em style={{ color: '#f83d8e', fontStyle: 'normal' }}>Love</em>
+            Made Fresh, Served with <em style={{ color: '#e53e3e', fontStyle: 'normal' }}>Love</em>
           </h2>
           <p className="text-gray-500 text-sm sm:text-base leading-relaxed max-w-xl mx-auto">
             Taste Out is Karachi's favourite spot for handcrafted ice creams, waffles and refreshing treats. Every scoop is made fresh with quality ingredients.
@@ -139,7 +147,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-8">
             <h2 style={{ fontFamily: "'Berkshire Swash', serif", fontSize: 'clamp(22px,3vw,36px)', fontWeight: 400, color: '#0f0200' }}>
-              Latest from Our <em style={{ color: '#f83d8e', fontStyle: 'normal' }}>Blog</em>
+              Latest from Our <em style={{ color: '#e53e3e', fontStyle: 'normal' }}>Blog</em>
             </h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
