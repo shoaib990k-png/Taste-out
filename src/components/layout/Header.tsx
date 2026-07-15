@@ -45,11 +45,6 @@ export default function Header() {
 
   const closeDrawer = () => setDrawerOpen(false);
 
-  const activeLinkStyle = ({ isActive }: { isActive: boolean }) =>
-    isActive
-      ? 'text-[#e53e3e] font-semibold'
-      : 'text-gray-700 hover:text-[#e53e3e] transition-colors';
-
   return (
     <>
       <header
