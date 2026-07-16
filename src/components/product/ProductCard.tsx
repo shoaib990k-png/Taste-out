@@ -1,4 +1,4 @@
-import { Star, ShoppingBag, Eye } from 'lucide-react';
+import { ShoppingBag, Eye } from 'lucide-react';
 import { Product } from '../../types';
 
 interface ProductCardProps {
@@ -31,13 +31,7 @@ export default function ProductCard({ product, onAddToCart, onSelectProduct }: P
           </div>
         </div>
 
-        {/* Rating Row */}
-        <div className="flex items-center gap-1 text-gold-star mb-1">
-          <Star className="w-4 h-4 fill-current text-gold-star" />
-          <span className="text-xs font-black text-chocolate-text">{product.rating} / 5</span>
-          <span className="text-[10px] text-body-text-gray/50">•</span>
-          <span className="text-[10px] text-body-text-gray font-bold uppercase tracking-wider">{product.category}</span>
-        </div>
+        {/* Rating Row — removed (rating no longer in Product type) */}
 
         {/* Title */}
         <h3 className="font-display font-black text-chocolate-text text-base leading-snug group-hover:text-primary-pink transition-colors">
@@ -54,7 +48,7 @@ export default function ProductCard({ product, onAddToCart, onSelectProduct }: P
       <div className="flex items-center justify-between pt-4 mt-3 border-t border-cream-bg/60">
         <div className="flex flex-col">
           <span className="text-[9px] font-bold text-body-text-gray uppercase tracking-widest leading-none">Price</span>
-          <span className="text-lg font-black text-primary-pink mt-0.5">${product.price.toFixed(2)}</span>
+          <span className="text-lg font-black text-primary-pink mt-0.5">${(product.price ?? 0).toFixed(2)}</span>
         </div>
 
         {/* Circular cart-icon button */}

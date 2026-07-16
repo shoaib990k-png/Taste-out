@@ -7,11 +7,11 @@ import { slugify } from '../utils/slug';
 
 export default function CartPage() {
   useEffect(() => { document.title = 'Cart — Taste Out'; }, []);
-  const { cart, subtotal, discount, deliveryFee, tax, total, updateQuantity, removeFromCart, appliedPromo } = useCart();
+  const { cart, subtotal, deliveryFee, total, updateQuantity, removeFromCart } = useCart();
   const { showToast } = useToast();
 
-  const handleRemove = (id: string, name: string) => {
-    removeFromCart(id);
+  const handleRemove = (cartItemId: string, name: string) => {
+    removeFromCart(cartItemId);
     showToast(`${name} removed from cart`);
   };
 
@@ -21,7 +21,8 @@ export default function CartPage() {
         <ShoppingBag size={56} className="text-gray-200" />
         <h1 className="text-xl font-bold text-gray-700">Your cart is empty</h1>
         <p className="text-sm text-gray-400">Add something delicious from our menu!</p>
-        <Link to="/menu" className="inline-flex items-center gap-2 px-6 py-2.5 text-white font-semibold rounded-full hover:opacity-90 text-sm" style={{ background: 'linear-gradient(135deg, #e53e3e, #f83d8e)' }}>
+        <Link to="/menu" className="inline-flex items-center gap-2 px-6 py-2.5 text-white font-semibold rounded-full hover:opacity-90 text-sm"
+          style={{ background: 'linear-gradient(135deg, #e53e3e, #f83d8e)' }}>
           Browse Menu <ArrowRight size={15} />
         </Link>
       </div>
@@ -44,34 +45,55 @@ export default function CartPage() {
 
           {/* Items */}
           <div className="lg:col-span-2 space-y-3">
-            {cart.map(({ product, quantity }) => (
-              <div key={product.id} className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex items-start gap-4">
-                <Link to={`/products/${slugify(product.name)}`} className="shrink-0 w-20 h-20 rounded-xl overflow-hidden bg-pink-50">
+            {cart.map((item) => (
+              <div key={item.cartItemId} className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex items-start gap-4">
+                <Link to={`/products/${slugify(item.product.name)}`} className="shrink-0 w-20 h-20 rounded-xl overflow-hidden bg-pink-50">
                   <img
-                    src={product.image}
-                    alt={product.name}
+                    src={item.product.image}
+                    alt={item.product.name}
                     className="w-full h-full object-cover"
                     referrerPolicy="no-referrer"
                     onError={(e) => { (e.currentTarget as HTMLImageElement).src = 'https://images.unsplash.com/photo-1501443715934-62488a258ac6?auto=format&fit=crop&q=80&w=200'; }}
                   />
                 </Link>
                 <div className="flex-1 min-w-0">
-                  <Link to={`/products/${slugify(product.name)}`} className="font-bold text-sm text-gray-900 hover:text-[#e53e3e] transition-colors block truncate">
-                    {product.name}
+                  <Link to={`/products/${slugify(item.product.name)}`} className="font-bold text-sm text-gray-900 hover:text-[#e53e3e] transition-colors block">
+                    {item.product.name}
+                    {item.variantLabel && (
+                      <span className="text-gray-400 font-normal"> — {item.variantLabel}</span>
+                    )}
                   </Link>
-                  <p className="text-xs text-gray-400 mt-0.5">{product.category}</p>
-                  <p className="text-sm font-bold text-[#e53e3e] mt-1">${(product.price * quantity).toFixed(2)}</p>
+                  {item.selectedAddons.length > 0 && (
+                    <p className="text-xs text-gray-400 mt-0.5">
+                      + {item.selectedAddons.map(a => a.label).join(', ')}
+                    </p>
+                  )}
+                  <p className="text-sm font-bold text-[#e53e3e] mt-1">
+                    Rs. {(item.unitPrice * item.quantity).toLocaleString()}
+                  </p>
                 </div>
                 <div className="flex flex-col items-end gap-2 shrink-0">
-                  <button onClick={() => handleRemove(product.id, product.name)} className="text-gray-300 hover:text-red-500 transition-colors" aria-label="Remove item">
+                  <button
+                    onClick={() => handleRemove(item.cartItemId, item.product.name)}
+                    className="text-gray-300 hover:text-red-500 transition-colors"
+                    aria-label="Remove item"
+                  >
                     <Trash2 size={14} />
                   </button>
                   <div className="flex items-center gap-1.5 border border-gray-200 rounded-full px-2 py-1">
-                    <button onClick={() => updateQuantity(product.id, quantity - 1)} className="w-5 h-5 flex items-center justify-center text-gray-500 hover:text-[#e53e3e] transition-colors" aria-label="Decrease">
+                    <button
+                      onClick={() => updateQuantity(item.cartItemId, item.quantity - 1)}
+                      className="w-5 h-5 flex items-center justify-center text-gray-500 hover:text-[#e53e3e] transition-colors"
+                      aria-label="Decrease"
+                    >
                       <Minus size={11} />
                     </button>
-                    <span className="w-5 text-center text-xs font-bold">{quantity}</span>
-                    <button onClick={() => updateQuantity(product.id, quantity + 1)} className="w-5 h-5 flex items-center justify-center text-gray-500 hover:text-[#e53e3e] transition-colors" aria-label="Increase">
+                    <span className="w-5 text-center text-xs font-bold">{item.quantity}</span>
+                    <button
+                      onClick={() => updateQuantity(item.cartItemId, item.quantity + 1)}
+                      className="w-5 h-5 flex items-center justify-center text-gray-500 hover:text-[#e53e3e] transition-colors"
+                      aria-label="Increase"
+                    >
                       <Plus size={11} />
                     </button>
                   </div>
@@ -84,23 +106,25 @@ export default function CartPage() {
           <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 h-fit space-y-3">
             <h2 className="font-bold text-gray-800">Order Summary</h2>
             <div className="space-y-2 text-sm">
-              <div className="flex justify-between text-gray-600"><span>Subtotal</span><span>${subtotal.toFixed(2)}</span></div>
-              {discount > 0 && (
-                <div className="flex justify-between text-green-600 font-semibold">
-                  <span>Promo ({appliedPromo})</span><span>-${discount.toFixed(2)}</span>
-                </div>
-              )}
-              <div className="flex justify-between text-gray-600"><span>Tax (8%)</span><span>${tax.toFixed(2)}</span></div>
+              <div className="flex justify-between text-gray-600">
+                <span>Subtotal</span>
+                <span>Rs. {subtotal.toLocaleString()}</span>
+              </div>
               <div className="flex justify-between text-gray-600">
                 <span>Delivery</span>
-                <span>{deliveryFee === 0 ? <span className="text-green-600 font-semibold">Free</span> : `$${deliveryFee.toFixed(2)}`}</span>
+                <span>
+                  {deliveryFee === 0
+                    ? <span className="text-green-600 font-semibold">Free</span>
+                    : `Rs. ${deliveryFee}`}
+                </span>
               </div>
-              <div className="border-t border-gray-100 pt-2 flex justify-between font-bold text-gray-800 text-base">
-                <span>Total</span><span className="text-[#e53e3e]">${total.toFixed(2)}</span>
+              <div className="flex justify-between font-bold text-gray-800 text-base pt-2 border-t border-gray-100">
+                <span>Total</span>
+                <span className="text-[#e53e3e]">Rs. {total.toLocaleString()}</span>
               </div>
             </div>
             {deliveryFee > 0 && (
-              <p className="text-xs text-gray-400">Add ${(15 - subtotal).toFixed(2)} more for free delivery</p>
+              <p className="text-xs text-gray-400">Add Rs. {(1000 - subtotal)} more for free delivery</p>
             )}
             <Link
               to="/checkout"

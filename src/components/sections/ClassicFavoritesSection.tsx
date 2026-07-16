@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { Heart, ShoppingCart, Star } from 'lucide-react';
-import { Product } from '../../types';
+import { Heart, ShoppingCart } from 'lucide-react';import { Product } from '../../types';
 import classicLeft from '../../assets/images/products/classic-leftimage.png';
 import classicRight from '../../assets/images/products/classic-rightimage.png';
 
@@ -250,8 +249,8 @@ export default function ClassicFavoritesSection({
                   flex: 1,
                 }}
               >
-                {/* Name + Rating row */}
-                <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '4px' }}>
+                {/* Name row */}
+                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '4px' }}>
                   <span
                     style={{
                       fontFamily: "'Archivo', sans-serif",
@@ -263,22 +262,6 @@ export default function ClassicFavoritesSection({
                     }}
                   >
                     {product.name}
-                  </span>
-                  <span
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '2px',
-                      fontFamily: "'Archivo', sans-serif",
-                      fontSize: '10px',
-                      fontWeight: 700,
-                      color: '#0f0200',
-                      whiteSpace: 'nowrap',
-                      flexShrink: 0,
-                    }}
-                  >
-                    <Star size={10} fill="#fbab2a" color="#fbab2a" />
-                    {product.rating}
                   </span>
                 </div>
 
@@ -323,15 +306,8 @@ export default function ClassicFavoritesSection({
                     paddingTop: '8px',
                   }}
                 >
-                  <span
-                    style={{
-                      fontFamily: "'Archivo', sans-serif",
-                      fontSize: '15px',
-                      fontWeight: 700,
-                      color: '#e53e3e',
-                    }}
-                  >
-                    ${product.price.toFixed(2)}
+                  <span style={{ fontFamily: "'Archivo', sans-serif", fontSize: '15px', fontWeight: 700, color: '#e53e3e' }}>
+                    Rs. {product.price ?? 0}
                   </span>
                   <button
                     onClick={(e) => { e.stopPropagation(); onAddToCart(product); }}

@@ -10,7 +10,7 @@ import { useToast } from '../context/ToastContext';
 import { products, blogPosts } from '../data';
 import { slugify } from '../utils/slug';
 import { Product } from '../types';
-import { Star, ShoppingCart, ArrowRight, Calendar, User } from 'lucide-react';
+import { ShoppingCart, ArrowRight, Calendar, User } from 'lucide-react';
 
 export default function HomePage() {
   const navigate = useNavigate();
@@ -25,7 +25,7 @@ export default function HomePage() {
   const bestSellers = products.filter(p => p.isBestSeller).slice(0, 4);
 
   const handleAddToCart = (product: Product) => {
-    addToCart(product, 1);
+    addToCart(product, { quantity: 1 });
     showToast(`${product.name} added to cart 🍦`);
   };
 
@@ -81,14 +81,10 @@ export default function HomePage() {
                     <Link to={`/products/${slugify(product.name)}`} className="text-sm font-bold text-gray-900 hover:text-[#e53e3e] leading-tight line-clamp-2">
                       {product.name}
                     </Link>
-                    <span className="flex items-center gap-0.5 text-[11px] font-bold text-gray-800 shrink-0">
-                      <Star size={10} fill="#fbab2a" color="#fbab2a" />
-                      {product.rating}
-                    </span>
                   </div>
                   <p className="text-[11px] text-gray-400 uppercase tracking-wide">{product.category}</p>
                   <div className="flex items-center justify-between mt-auto pt-2">
-                    <span className="text-base font-bold text-[#e53e3e]">${product.price.toFixed(2)}</span>
+                    <span className="text-base font-bold text-[#e53e3e]">{product.price ? `Rs. ${product.price}` : 'From Rs. 110'}</span>
                     <button
                       onClick={() => handleAddToCart(product)}
                       className="w-8 h-8 rounded-full flex items-center justify-center text-white shrink-0 hover:opacity-90 active:scale-90 transition-all"

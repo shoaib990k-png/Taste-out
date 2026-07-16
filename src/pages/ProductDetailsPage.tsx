@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { Star, ShoppingCart, ArrowLeft, Plus, Minus, ArrowRight } from 'lucide-react';
+import { ShoppingCart, ArrowLeft, Plus, Minus, ArrowRight } from 'lucide-react';
 import { products } from '../data';
 import { useCart } from '../context/CartContext';
 import { useToast } from '../context/ToastContext';
@@ -37,12 +37,12 @@ export default function ProductDetailsPage() {
   }
 
   const handleAddToCart = () => {
-    addToCart(product, quantity);
+    addToCart(product, { quantity });
     showToast(`${quantity}× ${product.name} added to cart 🍦`);
   };
 
   const handleOrderNow = () => {
-    addToCart(product, quantity);
+    addToCart(product, { quantity });
     navigate('/checkout');
   };
 
@@ -87,19 +87,9 @@ export default function ProductDetailsPage() {
               </h1>
             </div>
 
-            {/* Rating */}
-            <div className="flex items-center gap-2">
-              <div className="flex items-center gap-0.5">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <Star key={i} size={15} fill={i < Math.floor(product.rating) ? '#fbab2a' : 'none'} color="#fbab2a" />
-                ))}
-              </div>
-              <span className="text-sm font-semibold text-gray-700">{product.rating} / 5</span>
-            </div>
-
             {/* Price */}
             <div className="text-3xl font-bold text-[#e53e3e]">
-              ${product.price.toFixed(2)}
+              Rs. {product.price ?? 0}
               <span className="text-sm text-gray-400 font-normal ml-2">per serving</span>
             </div>
 
@@ -127,7 +117,7 @@ export default function ProductDetailsPage() {
                 </button>
               </div>
               <span className="text-sm font-bold text-gray-500">
-                = <span className="text-[#e53e3e]">${(product.price * quantity).toFixed(2)}</span>
+                = <span className="text-[#e53e3e]">Rs. {(product.price ?? 0) * quantity}</span>
               </span>
             </div>
 
@@ -166,7 +156,7 @@ export default function ProductDetailsPage() {
                   </div>
                   <div className="p-2.5">
                     <p className="text-xs font-bold text-gray-800 line-clamp-2 group-hover:text-[#e53e3e] transition-colors">{p.name}</p>
-                    <p className="text-sm font-bold text-[#e53e3e] mt-1">${p.price.toFixed(2)}</p>
+                    <p className="text-sm font-bold text-[#e53e3e] mt-1">Rs. {p.price ?? 0}</p>
                   </div>
                 </Link>
               ))}

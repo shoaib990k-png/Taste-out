@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, ShoppingBag } from 'lucide-react';
 import { useCart } from '../context/CartContext';
-import { slugify } from '../utils/slug';
 
 const WHATSAPP = '923001234567';
 
@@ -19,7 +18,7 @@ interface FormData {
 }
 
 export default function CheckoutPage() {
-  const { cart, subtotal, discount, deliveryFee, tax, total, appliedPromo } = useCart();
+  const { cart, subtotal, deliveryFee, total } = useCart();
   const [errors, setErrors] = useState<Partial<FormData>>({});
   const [form, setForm] = useState<FormData>({
     name: '', phone: '', altPhone: '', address: '', area: '',
@@ -58,7 +57,14 @@ export default function CheckoutPage() {
   };
 
   const buildMessage = () => {
-    const items = cart.map(i => `• ${i.product.name} × ${i.quantity} — $${(i.product.price * i.quantity).toFixed(2)}`).join('\n');
+    const items = cart.map(i => {
+      const variantStr = i.variantLabel ? ` (${i.variantLabel})` : '';
+      const addonsStr = i.selectedAddons.length > 0
+        ? ` + ${i.selectedAddons.map(a => a.label).join(', ')}`
+        : '';
+      return `• ${i.product.name}${variantStr}${addonsStr} × ${i.quantity} — Rs. ${(i.unitPrice * i.quantity).toLocaleString()}`;
+    }).join('\n');
+
     return [
       '*🍦 New Order — Taste Out*',
       '',
@@ -66,17 +72,17 @@ export default function CheckoutPage() {
       `*Phone:* ${form.phone}`,
       form.altPhone ? `*Alt Phone:* ${form.altPhone}` : '',
       `*Method:* ${form.deliveryMethod === 'delivery' ? 'Delivery' : 'Pickup'}`,
-      form.deliveryMethod === 'delivery' ? `*Address:* ${form.address}, ${form.area}${form.landmark ? `, near ${form.landmark}` : ''}` : '',
+      form.deliveryMethod === 'delivery'
+        ? `*Address:* ${form.address}, ${form.area}${form.landmark ? `, near ${form.landmark}` : ''}`
+        : '',
       form.notes ? `*Notes:* ${form.notes}` : '',
       '',
       '*Order Items:*',
       items,
       '',
-      `*Subtotal:* $${subtotal.toFixed(2)}`,
-      discount > 0 ? `*Discount (${appliedPromo}):* -$${discount.toFixed(2)}` : '',
-      `*Delivery:* ${deliveryFee === 0 ? 'Free' : `$${deliveryFee.toFixed(2)}`}`,
-      `*Tax (8%):* $${tax.toFixed(2)}`,
-      `*Total:* $${total.toFixed(2)}`,
+      `*Subtotal:* Rs. ${subtotal.toLocaleString()}`,
+      `*Delivery:* ${deliveryFee === 0 ? 'Free' : `Rs. ${deliveryFee}`}`,
+      `*Total:* Rs. ${total.toLocaleString()}`,
       '',
       `*Payment:* ${form.payment === 'cod' ? 'Cash on Delivery' : 'To be confirmed'}`,
     ].filter(Boolean).join('\n');
@@ -84,12 +90,11 @@ export default function CheckoutPage() {
 
   const handleOrder = () => {
     if (!validate()) return;
-    const msg = buildMessage();
-    window.open(`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(msg)}`, '_blank');
+    window.open(`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(buildMessage())}`, '_blank');
   };
 
   const InputClass = (field: keyof FormData) =>
-    `w-full px-4 py-2.5 border rounded-xl text-sm focus:outline-none focus:border-[#f83d8e] transition-colors ${errors[field] ? 'border-red-400' : 'border-gray-200'}`;
+    `w-full px-4 py-2.5 border rounded-xl text-sm focus:outline-none focus:border-[#e53e3e] transition-colors ${errors[field] ? 'border-red-400' : 'border-gray-200'}`;
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -109,7 +114,6 @@ export default function CheckoutPage() {
 
           {/* Form */}
           <div className="lg:col-span-2 space-y-5">
-
             {/* Delivery method */}
             <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
               <h2 className="font-bold text-gray-800 mb-4 text-sm">Delivery Method</h2>
@@ -123,7 +127,7 @@ export default function CheckoutPage() {
               </div>
             </div>
 
-            {/* Personal info */}
+            {/* Contact */}
             <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 space-y-4">
               <h2 className="font-bold text-gray-800 text-sm">Contact Information</h2>
               <div>
@@ -144,7 +148,7 @@ export default function CheckoutPage() {
               </div>
             </div>
 
-            {/* Delivery address */}
+            {/* Address */}
             {form.deliveryMethod === 'delivery' && (
               <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 space-y-4">
                 <h2 className="font-bold text-gray-800 text-sm">Delivery Address</h2>
@@ -171,7 +175,9 @@ export default function CheckoutPage() {
             <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 space-y-4">
               <div>
                 <label className="block text-xs font-semibold text-gray-600 mb-1.5">Order Notes (optional)</label>
-                <textarea rows={3} placeholder="Any special requests..." value={form.notes} onChange={e => update('notes', e.target.value)} className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#f83d8e] resize-none" />
+                <textarea rows={3} placeholder="Any special requests..." value={form.notes}
+                  onChange={e => update('notes', e.target.value)}
+                  className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#e53e3e] resize-none" />
               </div>
               <div>
                 <h3 className="text-xs font-semibold text-gray-600 mb-2">Payment Method</h3>
@@ -189,46 +195,54 @@ export default function CheckoutPage() {
             </div>
           </div>
 
-          {/* Summary */}
+          {/* Order Summary */}
           <div className="space-y-4">
             <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
               <h2 className="font-bold text-gray-800 mb-4 text-sm">Order Summary</h2>
               <div className="space-y-3 max-h-52 overflow-y-auto pr-1">
-                {cart.map(({ product, quantity }) => (
-                  <div key={product.id} className="flex items-center gap-2">
+                {cart.map(item => (
+                  <div key={item.cartItemId} className="flex items-start gap-2">
                     <div className="w-10 h-10 rounded-lg overflow-hidden bg-pink-50 shrink-0">
-                      <img src={product.image} alt={product.name} className="w-full h-full object-cover" referrerPolicy="no-referrer"
+                      <img src={item.product.image} alt={item.product.name}
+                        className="w-full h-full object-cover" referrerPolicy="no-referrer"
                         onError={e => { (e.currentTarget as HTMLImageElement).src = 'https://images.unsplash.com/photo-1501443715934-62488a258ac6?auto=format&fit=crop&q=80&w=100'; }} />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <Link to={`/products/${slugify(product.name)}`} className="text-xs font-semibold text-gray-800 truncate block hover:text-[#e53e3e]">{product.name}</Link>
-                      <p className="text-xs text-gray-400">×{quantity}</p>
+                      <p className="text-xs font-semibold text-gray-800 leading-tight">
+                        {item.product.name}
+                        {item.variantLabel && <span className="text-gray-400 font-normal"> · {item.variantLabel}</span>}
+                      </p>
+                      {item.selectedAddons.length > 0 && (
+                        <p className="text-[10px] text-gray-400">+ {item.selectedAddons.map(a => a.label).join(', ')}</p>
+                      )}
+                      <p className="text-xs text-gray-400">×{item.quantity}</p>
                     </div>
-                    <span className="text-xs font-bold text-gray-700 shrink-0">${(product.price * quantity).toFixed(2)}</span>
+                    <span className="text-xs font-bold text-gray-700 shrink-0">
+                      Rs. {(item.unitPrice * item.quantity).toLocaleString()}
+                    </span>
                   </div>
                 ))}
               </div>
 
               <div className="border-t border-gray-100 mt-4 pt-3 space-y-1.5 text-xs text-gray-600">
-                <div className="flex justify-between"><span>Subtotal</span><span>${subtotal.toFixed(2)}</span></div>
-                {discount > 0 && <div className="flex justify-between text-green-600 font-semibold"><span>Discount</span><span>-${discount.toFixed(2)}</span></div>}
-                <div className="flex justify-between"><span>Tax</span><span>${tax.toFixed(2)}</span></div>
-                <div className="flex justify-between"><span>Delivery</span><span>{deliveryFee === 0 ? 'Free' : `$${deliveryFee.toFixed(2)}`}</span></div>
+                <div className="flex justify-between"><span>Subtotal</span><span>Rs. {subtotal.toLocaleString()}</span></div>
+                <div className="flex justify-between">
+                  <span>Delivery</span>
+                  <span>{deliveryFee === 0 ? <span className="text-green-600 font-semibold">Free</span> : `Rs. ${deliveryFee}`}</span>
+                </div>
                 <div className="flex justify-between font-bold text-gray-800 text-sm pt-1 border-t border-gray-100">
-                  <span>Total</span><span className="text-[#e53e3e]">${total.toFixed(2)}</span>
+                  <span>Total</span><span className="text-[#e53e3e]">Rs. {total.toLocaleString()}</span>
                 </div>
               </div>
             </div>
 
-            <button
-              onClick={handleOrder}
+            <button onClick={handleOrder}
               className="w-full py-3.5 text-white font-bold rounded-full hover:opacity-90 transition-all text-sm min-h-[44px]"
-              style={{ background: 'linear-gradient(135deg, #e53e3e, #f83d8e)' }}
-            >
+              style={{ background: 'linear-gradient(135deg, #e53e3e, #f83d8e)' }}>
               📲 Place Order via WhatsApp
             </button>
             <p className="text-xs text-center text-gray-400">
-              Your order will be sent to our team via WhatsApp for confirmation.
+              Your order will be sent via WhatsApp for confirmation.
             </p>
           </div>
 

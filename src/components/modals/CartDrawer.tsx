@@ -37,18 +37,15 @@ export default function CartDrawer({
   if (!isOpen) return null;
 
   // Calculations
-  const subtotal = cart.reduce((total, item) => total + (item.product.price * item.quantity), 0);
+  const subtotal = cart.reduce((total, item) => total + (item.unitPrice * item.quantity), 0);
   
   // Calculate BOGO 50% Off (Buy One Sundae Get One 50% Off)
-  // If promo is SUMMER50, let's apply 50% off on every second item in the cart!
-  // To make it super authentic, let's expand the items into individual units, sort by price, 
-  // and discount every second item (the cheaper one of each pair).
   let discount = 0;
   if (appliedPromo.toUpperCase() === 'SUMMER50' && cart.length > 0) {
     const allIndividualPrices: number[] = [];
     cart.forEach(item => {
       for (let i = 0; i < item.quantity; i++) {
-        allIndividualPrices.push(item.product.price);
+        allIndividualPrices.push(item.unitPrice);
       }
     });
     // Sort descending so the more expensive ones are paid in full, and the cheaper ones get 50% off
@@ -155,7 +152,7 @@ export default function CartDrawer({
                     <div className="space-y-4">
                       {cart.map((item) => (
                         <div 
-                          key={item.product.id}
+                          key={item.cartItemId}
                           className="flex items-center gap-4 pb-4 border-b border-cream-bg/60 last:border-0 last:pb-0"
                         >
                           <img 
@@ -166,21 +163,24 @@ export default function CartDrawer({
                           />
                           <div className="flex-1">
                             <h4 className="font-bold text-chocolate-text leading-tight">{item.product.name}</h4>
+                            {item.variantLabel && (
+                              <p className="text-xs text-body-text-gray font-medium mt-0.5">{item.variantLabel}</p>
+                            )}
                             <p className="text-xs text-primary-pink font-semibold mt-0.5">{item.product.category}</p>
                             <div className="flex items-center justify-between mt-2">
-                              <span className="font-extrabold text-primary-pink">${(item.product.price * item.quantity).toFixed(2)}</span>
+                              <span className="font-extrabold text-primary-pink">${(item.unitPrice * item.quantity).toFixed(2)}</span>
                               
                               {/* Quantity Toggles */}
                               <div className="flex items-center gap-2 border border-cream-bg bg-cream-bg/20 rounded-full px-2 py-1">
                                 <button 
-                                  onClick={() => onUpdateQuantity(item.product.id, item.quantity - 1)}
+                                  onClick={() => onUpdateQuantity(item.cartItemId, item.quantity - 1)}
                                   className="p-1 rounded-full text-body-text-gray hover:text-primary-pink hover:bg-cream-bg transition-colors"
                                 >
                                   <Minus className="w-3.5 h-3.5" />
                                 </button>
                                 <span className="text-xs font-bold text-chocolate-text w-4 text-center">{item.quantity}</span>
                                 <button 
-                                  onClick={() => onUpdateQuantity(item.product.id, item.quantity + 1)}
+                                  onClick={() => onUpdateQuantity(item.cartItemId, item.quantity + 1)}
                                   className="p-1 rounded-full text-body-text-gray hover:text-primary-pink hover:bg-cream-bg transition-colors"
                                 >
                                   <Plus className="w-3.5 h-3.5" />
@@ -190,7 +190,7 @@ export default function CartDrawer({
                           </div>
                           
                           <button 
-                            onClick={() => onRemoveFromCart(item.product.id)}
+                            onClick={() => onRemoveFromCart(item.cartItemId)}
                             className="p-1.5 text-body-text-gray/50 hover:text-red-500 rounded-lg hover:bg-red-50 transition-colors self-start"
                             title="Remove"
                           >

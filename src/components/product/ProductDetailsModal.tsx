@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { X, Star, ShoppingBag, Plus, Minus, Info, Heart } from 'lucide-react';
+import { X, ShoppingBag, Plus, Minus, Info, Heart } from 'lucide-react';
 import { Product } from '../../types';
 
 interface ProductDetailsModalProps {
@@ -110,10 +110,6 @@ export default function ProductDetailsModal({ product, onClose, onAddToCart }: P
 
           {/* Bottom Info Overlay */}
           <div className="absolute bottom-6 left-6 text-white">
-            <div className="flex items-center gap-1.5 text-gold-star bg-chocolate-text/70 px-2.5 py-1 rounded-full text-xs font-bold w-fit mb-2">
-              <Star className="w-3.5 h-3.5 fill-current" />
-              <span>{product.rating} / 5 Rating</span>
-            </div>
             <p className="text-sm font-semibold text-white/90">Gourmet Handmade Ice Cream</p>
           </div>
         </div>
@@ -135,7 +131,7 @@ export default function ProductDetailsModal({ product, onClose, onAddToCart }: P
             </h3>
             
             <div className="flex items-baseline gap-2">
-              <span className="text-3xl font-extrabold text-primary-pink">${product.price.toFixed(2)}</span>
+              <span className="text-3xl font-extrabold text-primary-pink">${(product.price ?? 0).toFixed(2)}</span>
               <span className="text-xs text-body-text-gray font-semibold">/ serving cone or bowl</span>
             </div>
 
@@ -210,7 +206,7 @@ export default function ProductDetailsModal({ product, onClose, onAddToCart }: P
               className="flex-1 py-3.5 bg-primary-pink hover:bg-primary-pink-dark text-white font-bold rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-[1.01] flex items-center justify-center gap-2 cursor-pointer text-sm"
             >
               <ShoppingBag className="w-4 h-4" />
-              <span>Add to Order — ${(product.price * quantity).toFixed(2)}</span>
+              <span>Add to Order — ${((product.price ?? 0) * quantity).toFixed(2)}</span>
             </button>
           </div>
 

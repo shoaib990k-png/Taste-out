@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Search, X, ShoppingBag, Star } from 'lucide-react';
+import { Search, X, ShoppingBag } from 'lucide-react';
 import { Product } from '../../types';
 import { products } from '../../data';
 
@@ -107,12 +107,7 @@ export default function SearchModal({ isOpen, onClose, onSelectProduct, onAddToC
                         {product.name}
                       </h4>
                       <div className="flex items-center gap-2 mt-0.5">
-                        <span className="text-sm font-extrabold text-primary-pink">${product.price.toFixed(2)}</span>
-                        <span className="text-xs text-body-text-gray">•</span>
-                        <div className="flex items-center text-gold-star text-xs">
-                          <Star className="w-3.5 h-3.5 fill-current" />
-                          <span className="font-bold ml-1 text-chocolate-text">{product.rating}</span>
-                        </div>
+                        <span className="text-sm font-extrabold text-primary-pink">${(product.price ?? 0).toFixed(2)}</span>
                       </div>
                     </div>
                   </div>

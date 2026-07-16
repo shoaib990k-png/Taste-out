@@ -1,18 +1,40 @@
+export interface ProductVariant {
+  id: string;
+  label: string;
+  price: number;
+}
+
+export interface ProductAddon {
+  id: string;
+  label: string;
+  price: number;
+}
+
 export interface Product {
   id: string;
+  slug: string;
   name: string;
   category: string;
-  price: number;
-  rating: number;
   description: string;
   image: string;
-  isClassic?: boolean;
+  // flat price for products without variants
+  price?: number;
+  // variants for products that require selection
+  variants?: ProductVariant[];
+  // optional add-ons
+  addons?: ProductAddon[];
   isBestSeller?: boolean;
 }
 
 export interface CartItem {
+  cartItemId: string;       // unique: productId + variantId + addonIds
   product: Product;
+  variantId?: string;
+  variantLabel?: string;
+  variantPrice?: number;
+  selectedAddons: ProductAddon[];
   quantity: number;
+  unitPrice: number;        // variantPrice OR product.price
 }
 
 export interface Testimonial {
